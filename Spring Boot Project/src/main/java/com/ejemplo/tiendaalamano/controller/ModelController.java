@@ -1,7 +1,7 @@
 package com.ejemplo.tiendaalamano.controller;
 
 import com.ejemplo.tiendaalamano.model.Model;
-import com.ejemplo.tiendaalamano.service.ModelService;
+import com.ejemplo.tiendaalamano.service.IModel;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api")
 public class ModelController {
     @Autowired
-    private ModelService modelService;
+    private IModel modelService;
 
     @RequestMapping(value = "/model", method = RequestMethod.POST, consumes = "application/json")
     @ResponseStatus(HttpStatus.CREATED)

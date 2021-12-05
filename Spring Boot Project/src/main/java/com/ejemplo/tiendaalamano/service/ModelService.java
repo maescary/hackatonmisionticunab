@@ -1,16 +1,55 @@
 package com.ejemplo.tiendaalamano.service;
 
-import java.util.List;
-
 import com.ejemplo.tiendaalamano.model.Model;
+import com.ejemplo.tiendaalamano.repository.ModelRepository;
+import com.ejemplo.tiendaalamano.exception.BadResourceRequestException;
+import com.ejemplo.tiendaalamano.exception.NoSuchResourceFoundException;
 
-public interface ModelService {
-    void deleteAllModels();
-    void deleteModelById(Long id);
+import java.util.List;
+import java.util.Optional;
 
-    void createModel(Model model);
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-    Model getModelById(Long id);
+@Service("modelService")
+public class ModelService implements IModel {
+    @Autowired
+    private ModelRepository modelRepository;
 
-    List<Model> getAllModels();
+    @Override
+    public void deleteAllModels() {
+        modelRepository.deleteAllInBatch();
+    }
+
+    @Override
+    public void deleteModelById(Long id) {
+        modelRepository.deleteById(id);
+    }
+
+    @Override
+    public void createModel(Model model) {
+        Optional<Model> existingModel = modelRepository.findById(model.getId());
+
+        if (!existingModel.isPresent()) {
+            throw new BadResourceRequestException("Model with same id exists.");
+        }
+
+        modelRepository.save(model);
+    }
+
+    @Override
+    public Model getModelById(Long id) {
+        Optional<Model> model = modelRepository.findById(id);
+
+        if (!model.isPresent()) {
+            throw new NoSuchResourceFoundException("No model with given id found.");
+        }
+
+        return model.get();
+    }
+
+    @Override
+    public List<Model> getAllModels() {
+        return modelRepository.findAll();
+    }
 }

@@ -1,0 +1,45 @@
+package com.ejemplo.tiendaalamano.service;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.ejemplo.tiendaalamano.model.Recaudo;
+import com.ejemplo.tiendaalamano.repository.RecaudoRepository;
+
+@Service
+public class RecaudoService implements IRecaudo {
+	
+	@Autowired
+	private RecaudoRepository repositorio;
+
+	@Override
+	public List<Recaudo> findAll() {
+
+		return repositorio.findAll();
+	}
+
+	@Override
+	public Optional<Recaudo> findById(Long id) {
+		
+		return repositorio.findById(id);
+	}
+
+	@Override
+	public Recaudo save(Recaudo recaudo) {
+	
+		return repositorio.save(recaudo);
+	}
+
+	@Override
+	public void deleteById(Long id) {
+		
+		repositorio.deleteById(id);
+		
+	}
+	
+	
+
+}
